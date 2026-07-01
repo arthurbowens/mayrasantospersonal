@@ -1,3 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+@theme {
+  --color-pink-brand: #ff1493;
+  --color-pink-light: #ff69b4;
+  --color-pink-soft: #ff85c1;
+  --color-pink-dark: #c71585;
+  --color-dark: #0d0d0d;
+  --color-dark-card: #161616;
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Montserrat", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-dark);
+  color: #fff;
+}
+
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 40%, rgba(255, 20, 147, 0.08) 0%, transparent 70%),
+    var(--color-dark);
+}
