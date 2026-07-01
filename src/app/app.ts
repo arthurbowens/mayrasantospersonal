@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -7,8 +7,17 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
 })
 export class App {
+  protected readonly menuOpen = signal(false);
+
   protected readonly whatsappUrl =
     'https://wa.me/5500000000000?text=Oi%20Mayra!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20gratuita.';
+
+  protected readonly navLinks = [
+    { label: 'Início', href: '#' },
+    { label: 'Isso é pra mim?', href: '#para-quem' },
+    { label: 'Serviços', href: '#servicos' },
+    { label: 'Sobre', href: '#sobre' },
+  ];
 
   protected readonly services = [
     {
@@ -49,4 +58,12 @@ export class App {
     'Precisa de alguém que te puxe quando a motivação falhar',
     'Quer treinar com segurança e confiança no processo',
   ];
+
+  protected toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  protected closeMenu(): void {
+    this.menuOpen.set(false);
+  }
 }

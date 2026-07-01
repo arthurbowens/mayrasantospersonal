@@ -1,9 +1,9 @@
-<div class="min-h-screen bg-dark text-white overflow-x-hidden">
+<div class="min-h-screen bg-dark text-white overflow-x-hidden" [class.overflow-hidden]="menuOpen()">
 
   <!-- Header -->
   <header class="fixed top-0 inset-x-0 z-40 bg-dark/90 backdrop-blur-md border-b border-pink-brand/10">
-    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2.5">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
+      <a href="#" class="flex items-center gap-2.5" (click)="closeMenu()">
         <svg class="w-7 h-7 text-pink-brand shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M6.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm11 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM4 8h16v1H4V8zm0 7h16v1H4v-1z"/>
         </svg>
@@ -12,16 +12,90 @@
           <span class="block text-[10px] sm:text-xs tracking-[0.25em] text-pink-brand uppercase">Personal</span>
         </div>
       </a>
-      <a
-        [href]="whatsappUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hidden sm:inline-flex items-center gap-2 bg-pink-brand hover:bg-pink-light text-white text-sm font-bold px-5 py-2.5 rounded-full transition-colors"
+
+      <!-- Desktop nav -->
+      <nav class="hidden sm:flex items-center gap-6" aria-label="Menu principal">
+        @for (link of navLinks; track link.href) {
+          <a
+            [href]="link.href"
+            class="text-sm text-white/70 hover:text-pink-soft transition-colors"
+          >
+            {{ link.label }}
+          </a>
+        }
+        <a
+          [href]="whatsappUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-pink-brand hover:bg-pink-light text-white text-sm font-bold px-5 py-2.5 rounded-full transition-colors"
+        >
+          Quero ser aluna
+        </a>
+      </nav>
+
+      <!-- Mobile hamburger -->
+      <button
+        type="button"
+        class="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-pink-brand/20 text-white hover:border-pink-brand/40 transition-colors"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="mobile-menu"
+        [attr.aria-label]="menuOpen() ? 'Fechar menu' : 'Abrir menu'"
       >
-        Quero ser aluna
-      </a>
+        @if (menuOpen()) {
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        } @else {
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+        }
+      </button>
     </div>
   </header>
+
+  <!-- Mobile menu -->
+  @if (menuOpen()) {
+    <div
+      class="fixed inset-0 z-30 sm:hidden"
+      id="mobile-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu de navegação"
+    >
+      <button
+        type="button"
+        class="absolute inset-0 bg-dark/80 backdrop-blur-sm"
+        (click)="closeMenu()"
+        aria-label="Fechar menu"
+      ></button>
+
+      <nav
+        class="absolute top-[73px] inset-x-0 bg-dark-card border-b border-pink-brand/10 px-5 py-6 flex flex-col gap-1"
+        aria-label="Menu mobile"
+      >
+        @for (link of navLinks; track link.href) {
+          <a
+            [href]="link.href"
+            (click)="closeMenu()"
+            class="text-lg font-semibold text-white/90 hover:text-pink-brand py-3 border-b border-white/5 transition-colors"
+          >
+            {{ link.label }}
+          </a>
+        }
+        <a
+          [href]="whatsappUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          (click)="closeMenu()"
+          class="mt-4 inline-flex items-center justify-center gap-2 bg-pink-brand hover:bg-pink-light text-white font-bold px-6 py-4 rounded-full transition-colors"
+        >
+          Quero ser aluna
+        </a>
+      </nav>
+    </div>
+  }
 
   <!-- Hero -->
   <section class="hero-gradient min-h-screen flex items-center pt-20 pb-12 px-5">
@@ -109,7 +183,7 @@
   </section>
 
   <!-- Services -->
-  <section class="py-20 px-5">
+  <section id="servicos" class="py-20 px-5">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-14">
         <h2 class="font-display text-4xl sm:text-5xl tracking-wide text-white mb-3">
